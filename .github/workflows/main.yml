@@ -1,8 +1,8 @@
 name: Build and Deploy
 on: [push]
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: windows-latest
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
@@ -13,10 +13,30 @@ jobs:
         run: |
           npm install
           npm run build
-
-      - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@releases/v3
+          
+      - name: Upload Artifacts 🔺
+        uses: actions/upload-artifact@v1
         with:
-          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-          BRANCH: gh-pages
-          FOLDER: public
+          name: site
+          path: public
+          
+  deploy:
+      needs: [build]
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout 🛎️
+          uses: actions/checkout@v2
+          with:
+            persist-credentials: false
+
+        - name: Download Artifacts 🔻 # The built project is downloaded into the 'site' folder.
+          uses: actions/download-artifact@v1
+          with:
+            name: site
+
+        - name: Deploy 🚀
+          uses: JamesIves/github-pages-deploy-action@releases/v3
+          with:
+            ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+            BRANCH: gh-pages
+            FOLDER: "site"
