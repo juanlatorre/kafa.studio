@@ -1,4 +1,4 @@
-name: Deploy ton GitHub Pages
+name: Deploy to GitHub Pages
 
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the master branch
@@ -12,4 +12,6 @@ jobs:
     steps:
     - name: Deploy to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@3.4.8
-
+      with:
+        BRANCH: gh-pages
+        FOLDER: public
