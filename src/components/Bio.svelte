@@ -27,8 +27,12 @@
   .brush-yellow {
     background: url(../assets/brushbutton.svg);
     background-repeat: no-repeat;
-    background-size: 250px 80px;
+    background-size: 300px 80px;
     padding: 37px 39px;
+  }
+
+  .studio {
+    margin-left: -0.5em;
   }
 
   @media (min-width: 320px) and (max-width: 350px) {
@@ -59,22 +63,23 @@
 
 <div class="relative px-6 lg:px-24">
   <h1 class="font-bold text-3xl lg:text-4xl text-blacky">
-    Hola,
-    <br />
-    mi nombre es
-    <span id="bio" class="brush-pink text-white">Juan</span>
+    <span id="bio" class="brush-pink text-white">Kafa</span>
+    <span class="studio">Studio</span>
   </h1>
   <p
     class="nunito max-w-sm lg:max-w-md mt-10 lg:mt-16 text-md text-blacky
     lg:text-xl">
-    Soy un desarrollador front end y móvil de Chile, ayudando a personas y
+    <u>Kafa</u>
+    (
+    <i>/KAH-fuh/</i>
+    ) es un estudio de desarrollo web y móvil en Chile, ayudando a personas y
     empresas a entregar hermosas e intuitivas experiencias digitales a través de
     buenas prácticas, investigación y experiencia.
   </p>
-  <div class="mt-4">
+  <!-- <div class="mt-4">
     <a href="##" class="-ml-8 nunito text-black-jaan font-bold brush-yellow">
-      Un poco más sobre mi
+      Un poco más sobre nosotros
     </a>
-  </div>
+  </div> -->
 
 </div>
