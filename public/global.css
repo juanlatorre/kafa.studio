@@ -1,0 +1,28 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Nunito&display=swap");
+
+@keyframes mandalaAnimation {
+  0% {
+    transform: translate(100%, -30%) rotate(180deg);
+    -webkit-transform: translate(100%, -30%) rotate(180deg);
+    -moz-transform: translate(100%, -30%) rotate(180deg);
+    -ms-transform: translate(100%, -30%) rotate(180deg);
+    -o-transform: translate(100%, -30%) rotate(180deg);
+  }
+  100% {
+    transform: translateX(0);
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -o-transform: translateX(0);
+  }
+}
+
+@keyframes bioAnimation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
