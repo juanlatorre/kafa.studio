@@ -9,7 +9,7 @@
 <Tailwindcss />
 
 <main id="app" class="flex flex-col lg:flex-row h-screen">
-  <!-- <Navbar /> -->
+  <Navbar />
   <Home />
   <Contact />
   <Menu />

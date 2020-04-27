@@ -2,14 +2,57 @@
   import { isContactVisible } from "../stores.js";
   import { fly } from "svelte/transition";
 
+  let messageSend = false;
+
   function closeModal() {
     isContactVisible.set(false);
+  }
+
+  function handleSubmit() {
+    let headers = new Headers();
+    let config = {
+      method: "GET",
+      headers: headers,
+      mode: "cors",
+      cache: "default"
+    };
+
+    fetch("https://www.test-cors.org/", config)
+      .then(function(response) {
+        return response.text();
+      })
+      .then(function(body) {
+        document.body.innerHTML = body;
+      });
+    // let xhr = new XMLHttpRequest();
+    // xhr.open(
+    //   "POST",
+    //   "https://getform.io/f/2efc6aab-9a32-42b5-bbfb-92b116977fb2"
+    // );
+    // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    // xhr.onload = () => {
+    //   if (xhr.status === 200) {
+    //     alert("Something went wrong.");
+    //   } else if (xhr.status !== 200) {
+    //     alert("Request failed, returns status: " + xhr.status);
+    //   }
+    // };
+
+    // xhr.send();
+
+    // if (xhr.status === 200) {
+    //   messageSend = true;
+    // }
   }
 </script>
 
 <style>
   a {
     font-family: "Nunito", serif;
+  }
+
+  .g-recaptcha {
+    visibility: hidden;
   }
 </style>
 
@@ -40,23 +83,55 @@
       </a>
     </div>
     <div class="w-screen">
-      <script id="sylvmujwnocm">
-        (function(a, b, c, e, f) {
-          var s = a.createElement("script");
-          s.src = b;
-          s.setAttribute("data-form-id", e);
-          s.setAttribute("data-runner-id", c);
-          s.setAttribute("data-url-params", f);
-          s.setAttribute("data-scale", true);
-          a.head.appendChild(s);
-        })(
-          window.document,
-          "https://form.questionscout.com/qs-form-script.min.js",
-          "sylvmujwnocm",
-          "5e7d1c80445adb51b8aaa16c",
-          "[]"
-        );
-      </script>
+      <form
+        method="POST"
+        class="w-full max-w-sm bg-transparent px-8 pt-6 pb-8 mb-4"
+        on:submit|preventDefault={handleSubmit}
+        id="ajaxForm">
+        <div class="border-b border-b-2 border-black py-2 mb-4">
+          <input
+            class="appearance-none bg-transparent border-none w-full text-black
+            mr-3 py-1 px-2 leading-tight focus:outline-none placeholder-black"
+            type="text"
+            placeholder="Nombre"
+            aria-label="Nombre"
+            name="nombre"
+            required />
+        </div>
+        <div class="border-b border-b-2 border-black py-2 mb-4">
+          <input
+            class="appearance-none bg-transparent border-none w-full text-black
+            mr-3 py-1 px-2 leading-tight focus:outline-none placeholder-black"
+            type="text"
+            placeholder="Email"
+            aria-label="Email"
+            name="email"
+            required />
+        </div>
+        <div class="border-b border-b-2 border-black py-2 mb-6">
+          <textarea
+            placeholder="Mensaje"
+            name="mensaje"
+            class="w-full placeholder-black bg-transparent resize-y
+            focus:outline-none appearance-none text-black mr-3 py-1 px-2"
+            required />
+        </div>
+        <div
+          class="g-recaptcha"
+          data-sitekey="6LfICe8UAAAAAFy2ChG4dELGDqMc6jGb_vbmktwt" />
+        <div class="{messageSend ? 'block' : 'hidden'} p-3 mt-2 mb-3">
+          Recibimos tu mensaje ✌️
+        </div>
+        <div class="flex items-center justify-between">
+          <button
+            class="bg-purple-jaan hover:bg-yellow-jaan hover:text-black
+            text-white font-bold py-2 px-4 rounded focus:outline-none"
+            type="submit">
+            Enviar
+          </button>
+        </div>
+      </form>
+
     </div>
   </div>
 {/if}
