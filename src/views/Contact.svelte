@@ -2,20 +2,33 @@
   import { isContactVisible, client } from "../stores.js";
   import { fly } from "svelte/transition";
 
-  let messageSend = false;
+  let messageSend;
 
   function closeModal() {
     isContactVisible.set(false);
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     const formData = new FormData(event.target);
     const formClient = {};
     for (const [k, v] of formData.entries()) {
       formClient[k] = v;
     }
-    console.log("valor no form", formClient);
-    console.log("valor no store", getClient());
+
+    const res = fetch(
+      "https://getform.io/f/2efc6aab-9a32-42b5-bbfb-92b116977fb2",
+      {
+        method: "POST",
+        mode: "cors",
+        body: formData
+      }
+    ).then(function(response) {
+      if (response.ok) {
+        messageSend = true;
+      } else {
+        throw new Error();
+      }
+    });
   }
 </script>
 
@@ -56,13 +69,9 @@
       </a>
     </div>
     <div class="w-screen">
-      <p>{$client.name}</p>
-      <p>{$client.email}</p>
-      <p>{$client.message}</p>
-
       <form
         method="POST"
-        class="w-full max-w-sm bg-transparent px-8 pt-6 pb-8 mb-4"
+        class="w-full max-w-sm bg-transparent px-8 pt-6 pb-8 mb-4 mx-auto"
         on:submit|preventDefault={handleSubmit}
         id="ajaxForm">
         <div class="border-b border-b-2 border-black py-2 mb-4">
@@ -73,7 +82,7 @@
             placeholder="Nombre"
             aria-label="Nombre"
             name="nombre"
-            bind:value={$client.name}
+            value={$client.name}
             required />
         </div>
         <div class="border-b border-b-2 border-black py-2 mb-4">
@@ -84,7 +93,7 @@
             placeholder="Email"
             aria-label="Email"
             name="email"
-            bind:value={$client.email}
+            value={$client.email}
             required />
         </div>
         <div class="border-b border-b-2 border-black py-2 mb-6">
@@ -93,15 +102,24 @@
             name="mensaje"
             class="w-full placeholder-black bg-transparent resize-y
             focus:outline-none appearance-none text-black mr-3 py-1 px-2"
-            bind:value={$client.message}
+            value={$client.message}
             required />
         </div>
         <div
           class="g-recaptcha"
           data-sitekey="6LfICe8UAAAAAFy2ChG4dELGDqMc6jGb_vbmktwt" />
-        <div class="{messageSend ? 'block' : 'hidden'} p-3 mt-2 mb-3">
-          Recibimos tu mensaje ✌️
-        </div>
+        {#await handleSubmit}
+          <div />
+        {:then}
+          <div class="{messageSend ? 'block' : 'hidden'} p-3 mt-2 mb-3">
+            Recibimos tu mensaje ✌️
+          </div>
+
+        {:catch error}
+          <div class="p-3 mt-2 mb-3">
+            Tu mensaje no pudo ser enviado, inténtalo de nuevo 😰
+          </div>
+        {/await}
         <div class="flex items-center justify-between">
           <button
             class="bg-purple-jaan hover:bg-yellow-jaan hover:text-black
