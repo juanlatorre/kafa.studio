@@ -1,5 +1,5 @@
 <script>
-  import { isContactVisible } from "../stores.js";
+  import { isContactVisible, client } from "../stores.js";
   import { fly } from "svelte/transition";
 
   let messageSend = false;
@@ -8,41 +8,14 @@
     isContactVisible.set(false);
   }
 
-  function handleSubmit() {
-    let headers = new Headers();
-    let config = {
-      method: "GET",
-      headers: headers,
-      mode: "cors",
-      cache: "default"
-    };
-
-    fetch("https://www.test-cors.org/", config)
-      .then(function(response) {
-        return response.text();
-      })
-      .then(function(body) {
-        document.body.innerHTML = body;
-      });
-    // let xhr = new XMLHttpRequest();
-    // xhr.open(
-    //   "POST",
-    //   "https://getform.io/f/2efc6aab-9a32-42b5-bbfb-92b116977fb2"
-    // );
-    // xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    // xhr.onload = () => {
-    //   if (xhr.status === 200) {
-    //     alert("Something went wrong.");
-    //   } else if (xhr.status !== 200) {
-    //     alert("Request failed, returns status: " + xhr.status);
-    //   }
-    // };
-
-    // xhr.send();
-
-    // if (xhr.status === 200) {
-    //   messageSend = true;
-    // }
+  function handleSubmit(event) {
+    const formData = new FormData(event.target);
+    const formClient = {};
+    for (const [k, v] of formData.entries()) {
+      formClient[k] = v;
+    }
+    console.log("valor no form", formClient);
+    console.log("valor no store", getClient());
   }
 </script>
 
@@ -83,6 +56,10 @@
       </a>
     </div>
     <div class="w-screen">
+      <p>{$client.name}</p>
+      <p>{$client.email}</p>
+      <p>{$client.message}</p>
+
       <form
         method="POST"
         class="w-full max-w-sm bg-transparent px-8 pt-6 pb-8 mb-4"
@@ -96,6 +73,7 @@
             placeholder="Nombre"
             aria-label="Nombre"
             name="nombre"
+            bind:value={$client.name}
             required />
         </div>
         <div class="border-b border-b-2 border-black py-2 mb-4">
@@ -106,6 +84,7 @@
             placeholder="Email"
             aria-label="Email"
             name="email"
+            bind:value={$client.email}
             required />
         </div>
         <div class="border-b border-b-2 border-black py-2 mb-6">
@@ -114,6 +93,7 @@
             name="mensaje"
             class="w-full placeholder-black bg-transparent resize-y
             focus:outline-none appearance-none text-black mr-3 py-1 px-2"
+            bind:value={$client.message}
             required />
         </div>
         <div

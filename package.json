@@ -5,8 +5,7 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "sirv public --host 0.0.0.0",
-    "deploy": "gh-pages -d public"
+    "start": "sirv public --host 0.0.0.0"
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^2.1.0",
